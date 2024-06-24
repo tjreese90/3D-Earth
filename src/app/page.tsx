@@ -270,8 +270,12 @@ const Page = () => {
 							});
 						});
 
-						sunBackground.style.opacity = String(1 - obj.t);
-						moonBackground.style.opacity = String(obj.t);
+						if (sunBackground) {
+							sunBackground.style.opacity = String(1 - obj.t);
+						}
+						if (moonBackground) {
+							moonBackground.style.opacity = String(obj.t);
+						}
 					},
 					easing: 'easeInOutSine',
 					duration: 500,
