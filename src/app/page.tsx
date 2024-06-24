@@ -1,113 +1,381 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+import { useEffect } from 'react';
+import {
+	Vector2,
+	DoubleSide,
+	MeshBasicMaterial,
+	RingGeometry,
+	PlaneGeometry,
+	Clock,
+	Vector3,
+	Group,
+	FloatType,
+	PMREMGenerator,
+	TextureLoader,
+	Color,
+	Mesh,
+	SphereGeometry,
+	MeshPhysicalMaterial,
+	ACESFilmicToneMapping,
+	PCFSoftShadowMap,
+	DirectionalLight,
+	Scene,
+	PerspectiveCamera,
+	WebGLRenderer,
+	SRGBColorSpace,
+} from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import anime from 'animejs';
 
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  );
+// Extend Mesh to add custom properties
+declare module 'three' {
+	interface Mesh {
+		sunEnvIntensity?: number;
+		moonEnvIntensity?: number;
+		sunOpacity?: number;
+		moonOpacity?: number;
+	}
 }
+
+const Page = () => {
+	useEffect(() => {
+		let sunBackground = document.querySelector(
+			'.sun-background'
+		) as HTMLElement;
+		let moonBackground = document.querySelector(
+			'.moon-background'
+		) as HTMLElement;
+
+		const scene = new Scene();
+
+		const camera = new PerspectiveCamera(
+			45,
+			window.innerWidth / window.innerHeight,
+			0.1,
+			1000
+		);
+		camera.position.set(0, 15, 50);
+
+		const ringsScene = new Scene();
+
+		const ringsCamera = new PerspectiveCamera(
+			45,
+			window.innerWidth / window.innerHeight,
+			0.1,
+			1000
+		);
+		ringsCamera.position.set(0, 0, 50);
+
+		const renderer = new WebGLRenderer({ antialias: true, alpha: true });
+		renderer.setSize(window.innerWidth, window.innerHeight);
+		renderer.toneMapping = ACESFilmicToneMapping;
+		renderer.outputColorSpace = SRGBColorSpace;
+		renderer.shadowMap.enabled = true;
+		renderer.shadowMap.type = PCFSoftShadowMap;
+		document.body.appendChild(renderer.domElement);
+
+		const controls = new OrbitControls(camera, renderer.domElement);
+		controls.target.set(0, 0, 0);
+		controls.dampingFactor = 0.05;
+		controls.enableDamping = true;
+
+		const sunLight = new DirectionalLight(new Color('#FFFFFF'), 3.5);
+		sunLight.position.set(10, 20, 10);
+		sunLight.castShadow = true;
+		sunLight.shadow.mapSize.width = 512;
+		sunLight.shadow.mapSize.height = 512;
+		sunLight.shadow.camera.near = 0.5;
+		sunLight.shadow.camera.far = 100;
+		sunLight.shadow.camera.left = -10;
+		sunLight.shadow.camera.bottom = -10;
+		sunLight.shadow.camera.top = 10;
+		sunLight.shadow.camera.right = 10;
+		scene.add(sunLight);
+
+		const moonLight = new DirectionalLight(
+			new Color('#77ccff').convertSRGBToLinear(),
+			0
+		);
+		moonLight.position.set(-10, 20, 10);
+		moonLight.castShadow = true;
+		moonLight.shadow.mapSize.width = 512;
+		moonLight.shadow.mapSize.height = 512;
+		moonLight.shadow.camera.near = 0.5;
+		moonLight.shadow.camera.far = 100;
+		moonLight.shadow.camera.left = -10;
+		moonLight.shadow.camera.bottom = -10;
+		moonLight.shadow.camera.top = 10;
+		moonLight.shadow.camera.right = 10;
+		scene.add(moonLight);
+
+		let mousePos = new Vector2(0, 0);
+
+		window.addEventListener('mousemove', (e) => {
+			let x = e.clientX - window.innerWidth * 0.5;
+			let y = e.clientY - window.innerHeight * 0.5;
+
+			mousePos.x = x * 0.0003;
+			mousePos.y = y * 0.0003;
+		});
+
+		(async function () {
+			let pmrem = new PMREMGenerator(renderer);
+			let envmapTexture = await new RGBELoader()
+				.setDataType(FloatType)
+				.loadAsync('assets/old_room_2k.hdr'); // thanks to https://polyhaven.com/hdris !
+			let envMap = pmrem.fromEquirectangular(envmapTexture).texture;
+
+			const ring1 = new Mesh(
+				new RingGeometry(15, 13.5, 80, 1, 0),
+				new MeshPhysicalMaterial({
+					color: new Color('#FFCB8E').convertSRGBToLinear().multiplyScalar(200),
+					roughness: 0.25,
+					envMap,
+					envMapIntensity: 1.8,
+					side: DoubleSide,
+					transparent: true,
+					opacity: 0.35,
+				})
+			);
+			ring1.sunOpacity = 0.35;
+			ring1.moonOpacity = 0.03;
+			ringsScene.add(ring1);
+
+			const ring2 = new Mesh(
+				new RingGeometry(16.5, 15.75, 80, 1, 0),
+				new MeshBasicMaterial({
+					color: new Color('#FFCB8E').convertSRGBToLinear(),
+					transparent: true,
+					opacity: 0.5,
+					side: DoubleSide,
+				})
+			);
+			ring2.sunOpacity = 0.35;
+			ring2.moonOpacity = 0.1;
+			ringsScene.add(ring2);
+
+			const ring3 = new Mesh(
+				new RingGeometry(18, 17.75, 80),
+				new MeshBasicMaterial({
+					color: new Color('#FFCB8E').convertSRGBToLinear().multiplyScalar(50),
+					transparent: true,
+					opacity: 0.5,
+					side: DoubleSide,
+				})
+			);
+			ring3.sunOpacity = 0.35;
+			ring3.moonOpacity = 0.03;
+			ringsScene.add(ring3);
+
+			let textures = {
+				// thanks to https://free3d.com/user/ali_alkendi !
+				bump: await new TextureLoader().loadAsync('assets/earthbump.jpg'),
+				map: await new TextureLoader().loadAsync('assets/earthmap.jpg'),
+				spec: await new TextureLoader().loadAsync('assets/earthspec.jpg'),
+				planeTrailMask: await new TextureLoader().loadAsync('assets/mask.png'),
+			};
+
+			// Set color spaces for textures
+			textures.bump.colorSpace = SRGBColorSpace;
+			textures.map.colorSpace = SRGBColorSpace;
+			textures.spec.colorSpace = SRGBColorSpace;
+
+			// "Cartoon Plane" (https://skfb.ly/UOLT) by antonmoek
+			let plane = (await new GLTFLoader().loadAsync('assets/plane/scene.glb'))
+				.scene.children[0];
+			let planesData = [
+				makePlane(plane, textures.planeTrailMask, envMap, scene),
+				makePlane(plane, textures.planeTrailMask, envMap, scene),
+				makePlane(plane, textures.planeTrailMask, envMap, scene),
+				makePlane(plane, textures.planeTrailMask, envMap, scene),
+				makePlane(plane, textures.planeTrailMask, envMap, scene),
+			];
+
+			let sphere = new Mesh(
+				new SphereGeometry(10, 70, 70),
+				new MeshPhysicalMaterial({
+					map: textures.map,
+					roughnessMap: textures.spec,
+					bumpMap: textures.bump,
+					bumpScale: 0.05,
+					envMap,
+					envMapIntensity: 0.4,
+					sheen: 1,
+					sheenRoughness: 0.75,
+					sheenColor: new Color('#ff8a00').convertSRGBToLinear(),
+					clearcoat: 0.5,
+				})
+			);
+			sphere.sunEnvIntensity = 0.4;
+			sphere.moonEnvIntensity = 0.1;
+			sphere.rotation.y += Math.PI * 1.25;
+			sphere.receiveShadow = true;
+			scene.add(sphere);
+
+			let clock = new Clock();
+
+			let daytime = true;
+			let animating = false;
+			window.addEventListener('mousemove', (e) => {
+				if (animating) return;
+
+				let anim;
+				if (e.clientX > window.innerWidth - 200 && !daytime) {
+					anim = [1, 0];
+				} else if (e.clientX < 200 && daytime) {
+					anim = [0, 1];
+				} else {
+					return;
+				}
+
+				animating = true;
+
+				let obj = { t: 0 };
+				anime({
+					targets: obj,
+					t: anim,
+					complete: () => {
+						animating = false;
+						daytime = !daytime;
+					},
+					update: () => {
+						sunLight.intensity = 3.5 * (1 - obj.t);
+						moonLight.intensity = 3.5 * obj.t;
+
+						sunLight.position.setY(20 * (1 - obj.t));
+						moonLight.position.setY(20 * obj.t);
+
+						sphere.material.sheen = 1 - obj.t;
+
+						scene.children.forEach((child) => {
+							child.traverse((object) => {
+								if (object instanceof Mesh && object.material.envMap) {
+									object.material.envMapIntensity =
+										(object.sunEnvIntensity ?? 0) * (1 - obj.t) +
+										(object.moonEnvIntensity ?? 0) * obj.t;
+								}
+							});
+						});
+
+						ringsScene.children.forEach((child) => {
+							child.traverse((object) => {
+								if (object instanceof Mesh && object.material) {
+									object.material.opacity =
+										(object.sunOpacity ?? 0) * (1 - obj.t) +
+										(object.moonOpacity ?? 0) * obj.t;
+								}
+							});
+						});
+
+						sunBackground.style.opacity = String(1 - obj.t);
+						moonBackground.style.opacity = String(obj.t);
+					},
+					easing: 'easeInOutSine',
+					duration: 500,
+				});
+			});
+
+			renderer.setAnimationLoop(() => {
+				let delta = clock.getDelta();
+
+				planesData.forEach((planeData) => {
+					let plane = planeData.group;
+
+					plane.position.set(0, 0, 0);
+					plane.rotation.set(0, 0, 0);
+					plane.updateMatrixWorld();
+
+					planeData.rot += delta * 0.25;
+					plane.rotateOnAxis(planeData.randomAxis, planeData.randomAxisRot); // random axis
+					plane.rotateOnAxis(new Vector3(0, 1, 0), planeData.rot); // y-axis rotation
+					plane.rotateOnAxis(new Vector3(0, 0, 1), planeData.rad); // this decides the radius
+					plane.translateY(planeData.yOff);
+					plane.rotateOnAxis(new Vector3(1, 0, 0), +Math.PI * 0.5);
+				});
+
+				controls.update();
+				renderer.render(scene, camera);
+
+				ring1.rotation.x = ring1.rotation.x * 0.95 + mousePos.y * 0.05 * 1.2;
+				ring1.rotation.y = ring1.rotation.y * 0.95 + mousePos.x * 0.05 * 1.2;
+
+				ring2.rotation.x = ring2.rotation.x * 0.95 + mousePos.y * 0.05 * 0.375;
+				ring2.rotation.y = ring2.rotation.y * 0.95 + mousePos.x * 0.05 * 0.375;
+
+				ring3.rotation.x = ring3.rotation.x * 0.95 - mousePos.y * 0.05 * 0.275;
+				ring3.rotation.y = ring3.rotation.y * 0.95 - mousePos.x * 0.05 * 0.275;
+
+				renderer.autoClear = false;
+				renderer.render(ringsScene, ringsCamera);
+				renderer.autoClear = true;
+			});
+		})();
+
+		function makePlane(
+			planeMesh: any,
+			trailTexture: any,
+			envMap: any,
+			scene: Scene
+		) {
+			let plane = planeMesh.clone();
+			plane.scale.set(0.001, 0.001, 0.001);
+			plane.position.set(0, 0, 0);
+			plane.rotation.set(0, 0, 0);
+			plane.updateMatrixWorld();
+
+			plane.traverse((object: any) => {
+				if (object instanceof Mesh) {
+					object.material.envMap = envMap;
+					object.sunEnvIntensity = 1;
+					object.moonEnvIntensity = 0.3;
+					object.castShadow = true;
+					object.receiveShadow = true;
+				}
+			});
+
+			let trail = new Mesh(
+				new PlaneGeometry(1, 2),
+				new MeshPhysicalMaterial({
+					envMap,
+					envMapIntensity: 3,
+					roughness: 0.4,
+					metalness: 0,
+					transmission: 1,
+					transparent: true,
+					opacity: 1,
+					alphaMap: trailTexture,
+				})
+			);
+			trail.sunEnvIntensity = 3;
+			trail.moonEnvIntensity = 0.7;
+			trail.rotateX(Math.PI);
+			trail.translateY(1.1);
+
+			let group = new Group();
+			group.add(plane);
+			group.add(trail);
+
+			scene.add(group);
+
+			return {
+				group,
+				rot: Math.random() * Math.PI * 2.0,
+				rad: Math.random() * Math.PI * 0.45 + 0.2,
+				yOff: 10.5 + Math.random() * 1.0,
+				randomAxis: new Vector3(nr(), nr(), nr()).normalize(),
+				randomAxisRot: Math.random() * Math.PI * 2,
+			};
+		}
+
+		function nr() {
+			return Math.random() * 2 - 1;
+		}
+	}, []);
+
+	return <div />;
+};
+
+export default Page;
